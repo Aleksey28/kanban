@@ -4,25 +4,25 @@ const ADD_TO_DONE = "ADD_TO_DONE";
 const initialState = {
   toDo: [
     {
-      name: "Build a house",
+      title: "Build a house",
     },
     {
-      name: "Plant a tree",
+      title: "Plant a tree",
     },
   ],
   inProgress: [
     {
-      name: "Go to grocery",
+      title: "Go to grocery",
       time: new Date(),
     },
   ],
   done: [
     {
-      name: "Take out the trash",
+      title: "Take out the trash",
       price: 5.15,
     },
     {
-      name: "Walk the dog",
+      title: "Walk the dog",
       price: 11.87,
     },
   ],
@@ -33,12 +33,12 @@ const toDoReducer = (state = initialState, action: { type: string, data: string 
     case ADD_TO_PROGRESS:
       return {
         ...state,
-        inProgress: [...state.inProgress, { name: action.data, time: new Date() }],
+        inProgress: [...state.inProgress, { title: action.data, time: new Date() }],
       };
     case ADD_TO_DONE:
       return {
         ...state,
-        done: [...state.done, { name: action.data, price: 0 }],
+        done: [...state.done, { title: action.data, price: 0 }],
       };
     default:
       return state;

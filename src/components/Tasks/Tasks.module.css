@@ -1,0 +1,23 @@
+.tasks {
+  padding: 10px;
+  border: solid #eeeff1 1px;
+  border-radius: 5px;
+  background-color: #f7f8fa;
+}
+
+.tasks__count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: #e4e7ee;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+.tasks__title {
+  display: flex;
+}
+
