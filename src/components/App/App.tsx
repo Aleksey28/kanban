@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import { Plus } from "react-bootstrap-icons";
-import Tasks from "../Tasks/Tasks";
 import CardToDo from "../Tasks/Card/CardToDo/CardToDo";
 import CardInProgress from "../Tasks/Card/CardInProgress/CardInProgress";
 import CardDone from "../Tasks/Card/CardDone/CardDone";
+import Tasks from "../Tasks/Tasks";
+import Plus from "../icons/Plus";
 
 const initialState = {
   toDo: [
@@ -39,6 +39,53 @@ const initialState = {
   ],
 };
 
+// function App() {
+//
+//   const toDoListElements = initialState.toDo.map(item => (
+//     <CardToDo id={item.id} title={item.title}/>
+//   ));
+//   const inProgressListElements = initialState.inProgress.map(item => (
+//     <CardInProgress id={item.id} title={item.title} time={item.time}/>
+//   ));
+//   const doneListElements = initialState.done.map(item => (
+//     <CardDone id={item.id} title={item.title} price={item.price}/>
+//   ));
+//
+//   return (
+//     <Container>
+//       Anyway Labs Test Project
+//       <Row>
+//         <Col>
+//           <Container className="tasks">
+//             To do
+//             <Row>
+//               <Media>
+//                 <CardText className="mt-1 mr-1"/>
+//                 <Media.Body>
+//                   <h5>Test</h5>
+//                 </Media.Body>
+//               </Media>
+//             </Row>
+//           </Container>
+//         </Col>
+//         <Col>
+//           <Container className="tasks">
+//             To do
+//             <Row>
+//               <Media>
+//                 <CardText className="mt-1 mr-1"/>
+//                 <Media.Body>
+//                   <h5>Test</h5>
+//                 </Media.Body>
+//               </Media>
+//             </Row>
+//           </Container>
+//         </Col>
+//       </Row>
+//     </Container>
+//   );
+// }
+
 function App() {
 
   const toDoListElements = initialState.toDo.map(item => (
@@ -52,18 +99,16 @@ function App() {
   ));
 
   return (
-    <Container>
+    <Container fluid className="d-flex flex-column bg-light vh-100 py-3">
       <h1 className="h1">Anyway Labs Test Project</h1>
       <p className="h2">Just some good deeds</p>
-      <Row>
+      <Row className="flex-grow-1">
         <Col>
           <Tasks title="To do" data={toDoListElements}>
-            <Button variant="light"
-                    style={{
-                      display: "block",
-                      margin: "30px auto 0",
-                      backgroundColor: "#fff",
-                    }}><Plus/>New task</Button>
+            <Button type="button" variant="light" className="mt-4 mx-auto font-weight-bold d-flex align-items-center">
+              <Plus className="mr-1"/>
+              New task
+            </Button>
           </Tasks>
         </Col>
         <Col>
