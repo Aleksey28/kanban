@@ -1,9 +1,0 @@
-.card {
-  display: flex;
-  justify-content: space-between;
-}
-
-.card__data {
-  display: flex;
-  flex-direction: column;
-}

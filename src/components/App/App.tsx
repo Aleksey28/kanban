@@ -1,11 +1,9 @@
 import React from "react";
 import "./App.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import CardToDo from "../Tasks/Card/CardToDo/CardToDo";
-import CardInProgress from "../Tasks/Card/CardInProgress/CardInProgress";
-import CardDone from "../Tasks/Card/CardDone/CardDone";
 import Tasks from "../Tasks/Tasks";
 import Plus from "../icons/Plus";
+import Task from "../Tasks/Card/Task";
 
 const initialState = {
   toDo: [
@@ -39,63 +37,16 @@ const initialState = {
   ],
 };
 
-// function App() {
-//
-//   const toDoListElements = initialState.toDo.map(item => (
-//     <CardToDo id={item.id} title={item.title}/>
-//   ));
-//   const inProgressListElements = initialState.inProgress.map(item => (
-//     <CardInProgress id={item.id} title={item.title} time={item.time}/>
-//   ));
-//   const doneListElements = initialState.done.map(item => (
-//     <CardDone id={item.id} title={item.title} price={item.price}/>
-//   ));
-//
-//   return (
-//     <Container>
-//       Anyway Labs Test Project
-//       <Row>
-//         <Col>
-//           <Container className="tasks">
-//             To do
-//             <Row>
-//               <Media>
-//                 <CardText className="mt-1 mr-1"/>
-//                 <Media.Body>
-//                   <h5>Test</h5>
-//                 </Media.Body>
-//               </Media>
-//             </Row>
-//           </Container>
-//         </Col>
-//         <Col>
-//           <Container className="tasks">
-//             To do
-//             <Row>
-//               <Media>
-//                 <CardText className="mt-1 mr-1"/>
-//                 <Media.Body>
-//                   <h5>Test</h5>
-//                 </Media.Body>
-//               </Media>
-//             </Row>
-//           </Container>
-//         </Col>
-//       </Row>
-//     </Container>
-//   );
-// }
-
 function App() {
 
   const toDoListElements = initialState.toDo.map(item => (
-    <CardToDo id={item.id} title={item.title}/>
+    <Task id={item.id} title={item.title} textButton="Start" variantButton="primary" />
   ));
   const inProgressListElements = initialState.inProgress.map(item => (
-    <CardInProgress id={item.id} title={item.title} time={item.time}/>
+    <Task id={item.id} title={item.title} subtitle={(item.time).toString()} textButton="Resolve" variantButton="success" />
   ));
   const doneListElements = initialState.done.map(item => (
-    <CardDone id={item.id} title={item.title} price={item.price}/>
+    <Task id={item.id} title={item.title} subtitle={(item.price).toString()}/>
   ));
 
   return (
