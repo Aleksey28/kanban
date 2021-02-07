@@ -6,7 +6,7 @@ import Tasks from '../Tasks/Tasks';
 import Plus from '../icons/Plus';
 import Task from '../Tasks/Card/Task';
 
-const PRICE_FOR_HOUR = 100;
+const PRICE_FOR_HOUR = 1000;
 
 const initialState = {
   toDo: [
