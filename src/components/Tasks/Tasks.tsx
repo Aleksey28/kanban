@@ -3,15 +3,6 @@ import { Container } from "react-bootstrap";
 
 function Tasks({ title, data, children }: { title: string, data: any, children?: React.ReactNode }) {
 
-  //   useEffect(() => {
-//     const interval = window.setInterval(() => setValue((prev) => prev + 1), 1000 / INTERVAL);
-//     setMyInterval(interval);
-//     setIsRunTimer(true);
-//     return () => {
-//       window.clearInterval(interval);
-//     };
-//   }, []);
-
   return (
     <Container className="h-100 rounded-lg p-2 bg-secondary d-flex flex-column">
       <div className="d-flex text-white-50">

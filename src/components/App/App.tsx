@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Form, Modal, Row } from "react-bootstrap";
 import Tasks from "../Tasks/Tasks";
 import Plus from "../icons/Plus";
 import Task from "../Tasks/Card/Task";
@@ -46,11 +46,44 @@ const formatTime = (seconds: number) => {
   return `${h}:${m}:${s}`;
 };
 
+function createUUID() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = Math.random() * 16 | 0, v = c === "x" ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 function App() {
 
-  const [stateToDo, setStateToDo] = useState(initialState.toDo);
-  const [stateInProgress, setStateInProgress] = useState(initialState.inProgress);
-  const [stateDone, setStateDone] = useState(initialState.done);
+  const [stateToDo, setStateToDo] = useState<Array<{ id: string, title: string }>>(initialState.toDo);
+  const [stateInProgress, setStateInProgress] = useState<Array<{ id: string, title: string, time: number }>>(
+    initialState.inProgress);
+  const [stateDone, setStateDone] = useState<Array<{ id: string, title: string, price: number }>>(initialState.done);
+  const [addTaskIsOpen, setAddTaskIsOpen] = useState(false);
+  const [newTask, setNewTask] = useState("");
+
+  const handleOpenAddNewTask = () => {
+    setAddTaskIsOpen(true);
+  };
+
+  const handleCloseAddTask = () => {
+    setAddTaskIsOpen(false);
+  };
+
+  const handleChangeNewTask = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewTask(e.target.value);
+  };
+
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (newTask) {
+      setStateToDo(prevState => [...prevState, {
+        id: createUUID(),
+        title: newTask,
+      }]);
+      setAddTaskIsOpen(false);
+    }
+  };
 
   const startTask = ({ id }: { id: string }) => {
     const data = stateToDo.find(item => item.id === id);
@@ -90,10 +123,16 @@ function App() {
   }, [stateInProgress]);
 
   const toDoListElements = stateToDo.map(item => (
-    <Task id={item.id} title={item.title} textButton="Start" variantButton="primary" onClickButton={startTask}/>
+    <Task key={item.id}
+          id={item.id}
+          title={item.title}
+          textButton="Start"
+          variantButton="primary"
+          onClickButton={startTask}/>
   ));
   const inProgressListElements = stateInProgress.map(item => (
-    <Task id={item.id}
+    <Task key={item.id}
+          id={item.id}
           title={item.title}
           subtitle={formatTime(item.time)}
           textButton="Resolve"
@@ -102,7 +141,7 @@ function App() {
     />
   ));
   const doneListElements = stateDone.map(item => (
-    <Task id={item.id} title={item.title} subtitle={`$${(item.price.toFixed(2)).toString()}`}/>
+    <Task key={item.id} id={item.id} title={item.title} subtitle={`$${(item.price.toFixed(2)).toString()}`}/>
   ));
 
   return (
@@ -112,7 +151,10 @@ function App() {
       <Row className="flex-grow-1">
         <Col>
           <Tasks title="To do" data={toDoListElements}>
-            <Button type="button" variant="light" className="mt-4 mx-auto font-weight-bold d-flex align-items-center">
+            <Button type="button"
+                    onClick={handleOpenAddNewTask}
+                    variant="light"
+                    className="mt-4 mx-auto font-weight-bold d-flex align-items-center">
               <Plus className="mr-1"/>
               New task
             </Button>
@@ -125,6 +167,20 @@ function App() {
           <Tasks title="Done" data={doneListElements}/>
         </Col>
       </Row>
+      <Modal show={addTaskIsOpen} onHide={handleCloseAddTask}>
+        <Modal.Header closeButton>
+          <Modal.Title>New task</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formBasicNewTask">
+              <Form.Label>Title</Form.Label>
+              <Form.Control type="text" value={newTask} onChange={handleChangeNewTask} placeholder="Enter title"/>
+            </Form.Group>
+            <Button type="submit" variant="primary">Add</Button>
+          </Form>
+        </Modal.Body>
+      </Modal>
     </Container>
   );
 }
