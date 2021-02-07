@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Tasks from "../Tasks/Tasks";
@@ -77,6 +77,17 @@ function App() {
     }]);
     setStateInProgress(stateInProgress.filter(item => item.id !== id));
   };
+
+  useEffect(() => {
+    window.clearInterval();
+    const interval = window.setInterval(() => setStateInProgress(stateInProgress.map(item => ({
+      ...item,
+      time: item.time + 1,
+    }))), 1000);
+    return () => {
+      window.clearInterval(interval);
+    };
+  }, [stateInProgress]);
 
   const toDoListElements = stateToDo.map(item => (
     <Task id={item.id} title={item.title} textButton="Start" variantButton="primary" onClickButton={startTask}/>
