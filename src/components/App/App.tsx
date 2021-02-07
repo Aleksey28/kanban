@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import Tasks from "../Tasks/Tasks";
 import Plus from "../icons/Plus";
 import Task from "../Tasks/Card/Task";
+
+const PRICE_FOR_HOUR = 14;
 
 const initialState = {
   toDo: [
@@ -37,16 +39,59 @@ const initialState = {
   ],
 };
 
+const formatTime = (seconds: number) => {
+  const h = Math.floor(seconds / 60 / 60).toString().padStart(2, "0");
+  const m = Math.floor(seconds / 60 % 60).toString().padStart(2, "0");
+  const s = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${h}:${m}:${s}`;
+};
+
 function App() {
 
-  const toDoListElements = initialState.toDo.map(item => (
-    <Task id={item.id} title={item.title} textButton="Start" variantButton="primary" />
+  const [stateToDo, setStateToDo] = useState(initialState.toDo);
+  const [stateInProgress, setStateInProgress] = useState(initialState.inProgress);
+  const [stateDone, setStateDone] = useState(initialState.done);
+
+  const startTask = ({ id }: { id: string }) => {
+    const data = stateToDo.find(item => item.id === id);
+    if (!data) {
+      return;
+    }
+    setStateInProgress((prev) => [...prev, {
+      id: data.id,
+      title: data.title,
+      time: 0,
+    }]);
+    setStateToDo(stateToDo.filter(item => item.id !== id));
+  };
+
+  const resolveTask = ({ id }: { id: string }) => {
+    const data = stateInProgress.find(item => item.id === id);
+    if (!data) {
+      return;
+    }
+    setStateDone((prev) => [...prev, {
+      id: data.id,
+      title: data.title,
+      price: Number(data.time) / 60 / 60 * PRICE_FOR_HOUR,
+    }]);
+    setStateInProgress(stateInProgress.filter(item => item.id !== id));
+  };
+
+  const toDoListElements = stateToDo.map(item => (
+    <Task id={item.id} title={item.title} textButton="Start" variantButton="primary" onClickButton={startTask}/>
   ));
-  const inProgressListElements = initialState.inProgress.map(item => (
-    <Task id={item.id} title={item.title} subtitle={(item.time).toString()} textButton="Resolve" variantButton="success" />
+  const inProgressListElements = stateInProgress.map(item => (
+    <Task id={item.id}
+          title={item.title}
+          subtitle={formatTime(item.time)}
+          textButton="Resolve"
+          variantButton="success"
+          onClickButton={resolveTask}
+    />
   ));
-  const doneListElements = initialState.done.map(item => (
-    <Task id={item.id} title={item.title} subtitle={(item.price).toString()}/>
+  const doneListElements = stateDone.map(item => (
+    <Task id={item.id} title={item.title} subtitle={`$${(item.price.toFixed(2)).toString()}`}/>
   ));
 
   return (

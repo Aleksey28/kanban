@@ -7,10 +7,17 @@ interface TaskInterface {
   title: string,
   subtitle?: string,
   textButton?: string,
-  variantButton?: string
+  variantButton?: string,
+  onClickButton?: Function
 }
 
-function Task({ id, title, subtitle, textButton, variantButton }: TaskInterface) {
+function Task({ id, title, subtitle, textButton, variantButton, onClickButton }: TaskInterface) {
+
+  const handleClickOnButton = () => {
+    if (onClickButton) {
+      onClickButton({ id, title, subtitle});
+    }
+  };
 
   return (
     <Card key={id} className="d-flex flex-row mb-2 align-items-center">
@@ -25,7 +32,8 @@ function Task({ id, title, subtitle, textButton, variantButton }: TaskInterface)
           </p>
         </div>
       </Card.Body>
-      {textButton && <Button variant={variantButton} size="sm" className="mr-3">{textButton}</Button>}
+      {textButton &&
+      <Button variant={variantButton} size="sm" className="mr-3" onClick={handleClickOnButton}>{textButton}</Button>}
     </Card>
   );
 }
