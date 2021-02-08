@@ -200,27 +200,28 @@ function App() {
   ));
 
   return (
-    <Container fluid className="d-flex flex-column bg-light vh-100 py-3">
-      <h1 className="h1">Anyway Labs Test Project</h1>
-      <p className="h2">Just some good deeds</p>
-      <Row className="flex-grow-1">
-        <Col>
+    <Container fluid className="d-flex flex-column bg-white vh-100 py-3">
+      <h1 className="h5 display-5 mt-1 ml-1"><small className="font-weight-bold">Anyway Labs Test Project</small></h1>
+      <p className="h6 text-muted ml-1 mb-4"><small>Just some good deeds</small></p>
+      <Row className="flex-grow-1 px-2">
+        <Col className="px-2">
           <Tasks title="To do" data={toDoListElements}>
             <Button
               type="button"
               onClick={handleOpenAddNewTask}
               variant="light"
-              className="mt-4 mx-auto font-weight-bold d-flex align-items-center"
+              className="mt-4 mx-auto d-flex align-items-center bg-white text-dark button-add"
+              style={{ border: '2px solid #ecedef' }}
             >
               <Plus className="mr-1" />
               New task
             </Button>
           </Tasks>
         </Col>
-        <Col>
+        <Col className="px-2">
           <Tasks title="In progress" data={inProgressListElements} />
         </Col>
-        <Col>
+        <Col className="px-2">
           <Tasks title="Done" data={doneListElements} />
         </Col>
       </Row>

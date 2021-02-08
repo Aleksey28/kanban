@@ -21,9 +21,9 @@ function Task({
   };
 
   return (
-    <Card key={id} className="d-flex flex-row mb-2 align-items-center">
-      <Card.Body className="d-flex p-2">
-        <CardText className="mt-1 mr-1" />
+    <Card key={id} className="d-flex flex-row mb-2 align-items-center" style={{ minHeight: '80px' }}>
+      <Card.Body className="d-flex p-2 align-self-start">
+        <CardText className="mt-1 mr-2" />
         <div>
           <p className="font-weight-normal mb-3">
             {title}
@@ -34,7 +34,7 @@ function Task({
         </div>
       </Card.Body>
       {textButton
-      && <Button variant={variantButton} size="sm" className="mr-3" onClick={handleClickOnButton}>{textButton}</Button>}
+      && <Button variant={variantButton} className="mr-3" onClick={handleClickOnButton}>{textButton}</Button>}
     </Card>
   );
 }

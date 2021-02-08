@@ -9,11 +9,14 @@ interface TasksInterface {
 
 function Tasks({ title, data, children }: TasksInterface) {
   return (
-    <Container className="h-100 rounded-lg p-2 bg-secondary d-flex flex-column">
-      <div className="d-flex text-white-50">
+    <Container
+      className="h-100 rounded-lg bg-light px-3 d-flex flex-column"
+      style={{ border: '2px solid #ecedef' }}
+    >
+      <div className="d-flex ml-1 mt-3">
         <p
-          className="d-flex  bg-dark rounded-circle justify-content-center align-items-center mr-1"
-          style={{ width: '20px', height: '20px' }}
+          className="d-flex rounded-circle text-secondary justify-content-center align-items-center mr-2"
+          style={{ width: '22px', height: '22px', backgroundColor: '#e4e7ee' }}
         >
           {data.length}
         </p>
