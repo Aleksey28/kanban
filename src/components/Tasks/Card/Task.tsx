@@ -16,7 +16,7 @@ function Task({
 }: TaskInterface) {
   const handleClickOnButton = () => {
     if (onClickButton) {
-      onClickButton({ id, title, subtitle });
+      onClickButton({ tskId: id, title, subtitle });
     }
   };
 

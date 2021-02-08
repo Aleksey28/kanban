@@ -55,15 +55,27 @@ function createUUID() {
   });
 }
 
+interface stateToDoArrInterface {
+  id: string,
+  title: string,
+}
+
+interface stateInProgressArrInterface {
+  id: string,
+  title: string,
+  time: number
+}
+
+interface stateDoneArrInterface {
+  id: string,
+  title: string,
+  price: number
+}
+
 function App() {
-  const [stateToDo, setStateToDo] = useState<Array<{
-    id: string, title: string }>>(initialState.toDo);
-  const [stateInProgress, setStateInProgress] = useState<Array<{
-    id: string, title: string, time: number }>>(
-      initialState.inProgress,
-    );
-  const [stateDone, setStateDone] = useState<Array<{
-    id: string, title: string, price: number }>>(initialState.done);
+  const [stateToDo, setStateToDo] = useState<Array<stateToDoArrInterface>>([]);
+  const [stateInProgress, setStateInProgress] = useState<Array<stateInProgressArrInterface>>([]);
+  const [stateDone, setStateDone] = useState<Array<stateDoneArrInterface>>([]);
   const [addTaskIsOpen, setAddTaskIsOpen] = useState(false);
   const [newTask, setNewTask] = useState('');
 
@@ -82,39 +94,74 @@ function App() {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (newTask) {
-      setStateToDo((prevState) => [...prevState, {
+      Promise.resolve({
         id: createUUID(),
         title: newTask,
-      }]);
-      setAddTaskIsOpen(false);
+      })
+        .then(({ id, title }) => setStateToDo((prevState) => [...prevState, {
+          id,
+          title,
+        }]))
+        .then(() => {
+          setAddTaskIsOpen(false);
+        })
+        .catch(console.log);
     }
   };
 
-  const startTask = ({ id }: { id: string }) => {
-    const data = stateToDo.find((item) => item.id === id);
-    if (!data) {
-      return;
-    }
-    setStateInProgress((prev) => [...prev, {
-      id: data.id,
-      title: data.title,
-      time: 0,
-    }]);
-    setStateToDo(stateToDo.filter((item) => item.id !== id));
+  const startTask = ({ tskId }: { tskId: string }) => {
+    Promise.resolve(tskId)
+      .then((id) => stateToDo.find((item) => item.id === id))
+      .then((data) => {
+        if (!data) {
+          throw Error;
+        }
+        setStateInProgress((prev) => [...prev, {
+          id: data.id,
+          title: data.title,
+          time: 0,
+        }]);
+
+        return data.id;
+      })
+      .then((id) => {
+        setStateToDo(stateToDo.filter((item) => item.id !== id));
+      })
+      .catch(console.log);
   };
 
-  const resolveTask = ({ id }: { id: string }) => {
-    const data = stateInProgress.find((item) => item.id === id);
-    if (!data) {
-      return;
-    }
-    setStateDone((prev) => [...prev, {
-      id: data.id,
-      title: data.title,
-      price: (Number(data.time) / 60 / 60) * PRICE_FOR_HOUR,
-    }]);
-    setStateInProgress(stateInProgress.filter((item) => item.id !== id));
+  const resolveTask = ({ tskId }: { tskId: string }) => {
+    Promise.resolve(tskId)
+      .then((id) => stateInProgress.find((item) => item.id === id))
+      .then((data) => {
+        if (!data) {
+          throw Error;
+        }
+        setStateDone((prev) => [...prev, {
+          id: data.id,
+          title: data.title,
+          price: (Number(data.time) / 60 / 60) * PRICE_FOR_HOUR,
+        }]);
+
+        return data.id;
+      })
+      .then((id) => {
+        setStateInProgress(stateInProgress.filter((item) => item.id !== id));
+      })
+      .catch(console.log);
   };
+
+  useEffect(() => {
+    Promise.resolve(initialState.toDo)
+      .then((data) => setStateToDo(data))
+      .catch(console.log);
+    Promise.resolve(initialState.inProgress)
+      .then((data) => setStateInProgress(data))
+      .catch(console.log);
+    Promise.resolve(initialState.done)
+      .then((data) => setStateDone(data))
+      .catch(console.log);
+  }, []);
 
   useEffect(() => {
     window.clearInterval();

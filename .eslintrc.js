@@ -26,7 +26,7 @@ module.exports = {
     'no-underscore-dangle': [
       'error',
       {
-        allow: ['_id', '__dirname'],
+        allow: ['_id', '__dirname', '_baseUrl', '_headers'],
       },
     ],
     'no-console': 'off',
