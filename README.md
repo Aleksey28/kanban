@@ -21,6 +21,6 @@ TypeScript, React (функциональный стиль), Bootstrap, ESLint, 
 ### `npm run build`
 Для публикации приложения нужно выполнить 
 ### `npm run deploy`
-## Ссылка на GitHub Pages
-https://aleksey28.github.io/kanban/
+## Ссылка на приложение
+https://my-kanban-todo.herokuapp.com/
 
